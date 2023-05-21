@@ -14,11 +14,12 @@ function App() {
         <div id='session-length'>25</div>
         <div id='session-increment'> &lt;- </div>
       </div>
-      <div id='timer-label'>
-          <div id='time-left'></div>
-          <div id='start_stop'></div>
-          <div id='reset'></div>
+      <div id='timer-label'> Session
+          <div id='time-left'>00:00</div>
+          <div id='start_stop'>start_stop</div>
+          <div id='reset'>reset</div>
       </div>
+      <div id='author'>Coded by<br/>Keterina-Shche</div>
       <audio id='beep'></audio>
     </div>
   );
