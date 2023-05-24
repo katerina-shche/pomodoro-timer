@@ -7,6 +7,7 @@ function App() {
   const [title, setTitle] = useState('Session')
   const [breakLength, setBreakLenght] = useState(5)
   const [sessionLength, setSessionLength] = useState(25)
+  const [minutes, setMinutes] = useState(sessionLength)
   const [timeString, setTimeString] = useState('00:00')
   return (
     <div className="App">
@@ -23,7 +24,7 @@ function App() {
         <div id='session-length'>{sessionLength}</div>
         <div id='session-increment'> &lt;- </div>
       </div>
-      <Timer timeString={timeString} title={title} />
+      <Timer timeString={timeString} title={title} minutes={minutes} />
       <div id='author'>Coded by<br/>Keterina-Shche</div>
       <audio id='beep'></audio>
     </div>
