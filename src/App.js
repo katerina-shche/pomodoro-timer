@@ -10,18 +10,20 @@ function App() {
   const [timeString, setTimeString] = useState('00:00')
   return (
     <div className="App">
-     <div id='main-titile'>25 + 5 clock</div>
-     <div id='break-label'>Break Length
+     <h1 id='main-titile'>25 + 5 clock</h1>
+     <div id='break-box'>
+        <h2 id='break-label'>Break Length</h2> 
         <div id='break-decrement'> -&gt; </div>
         <div id='break-length'>{breakLength}</div>
         <div id='break-increment'> &lt;- </div>
      </div>
-     <div id='session-label'>Session Length
+     <div id='session-box'>
+      <h1 id='session-label'>Session Length</h1>
         <div id='session-decrement'> -&gt; </div>
         <div id='session-length'>{sessionLength}</div>
         <div id='session-increment'> &lt;- </div>
       </div>
-      <Timer timeLeft={timeString} title={title} />
+      <Timer timeString={timeString} title={title} />
       <div id='author'>Coded by<br/>Keterina-Shche</div>
       <audio id='beep'></audio>
     </div>
