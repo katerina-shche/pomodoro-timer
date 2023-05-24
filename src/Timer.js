@@ -3,6 +3,8 @@ import React from 'react'
 import './Timer.css'
 
 export default function Timer({ title, timeString}) {
+
+    
   return (
     <div id='timer'>
         <h2 id='timer-label'>{title}</h2>
