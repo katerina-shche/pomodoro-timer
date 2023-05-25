@@ -4,15 +4,19 @@ import { useState, useEffect } from 'react'
 import './Timer.css'
 
 export default function Timer({ title, minutes}) {
-
-    const [seconds, setSeconds] = useState(minutes * 60)
     const [isRunning, setIsRunning] = useState(false)
-    const [min, setMin] = useState(Math.floor(seconds / 60))
-    const [sec, setSec] = useState(seconds % 60)
-    const [timeString, setTimeString] = useState(`${min}:${sec < 10 ? '0' + sec : sec}`)
+    
 
     useEffect(() => {
         let timer = null
+
+        const [seconds, setSeconds] = useState(minutes * 60)
+        const [min, setMin] = useState(Math.floor(seconds / 60))
+        const [sec, setSec] = useState(seconds % 60)
+        const [timeString, setTimeString] = useState(`${min}:${sec < 10 ? '0' + sec : sec}`)
+
+        const now = Date.now();
+        const then = now + seconds * 1000
 
         
          timer = setInterval(() => {
