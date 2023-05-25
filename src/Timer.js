@@ -3,28 +3,36 @@ import { useState, useEffect } from 'react'
 //styles
 import './Timer.css'
 
-export default function Timer({ title, minutes}) {
+export default function Timer({ title, seconds}) {
     const [isRunning, setIsRunning] = useState(false)
-    
+    const [secondsLeft, setSecondsLeft] = useState(seconds)
+    const [timeString, setTimeString] = useState("")
 
     useEffect(() => {
         let timer = null
 
-        const [seconds, setSeconds] = useState(minutes * 60)
-        const [min, setMin] = useState(Math.floor(seconds / 60))
-        const [sec, setSec] = useState(seconds % 60)
-        const [timeString, setTimeString] = useState(`${min}:${sec < 10 ? '0' + sec : sec}`)
-
         const now = Date.now();
         const then = now + seconds * 1000
-
         
-         timer = setInterval(() => {
+        function displayTimeLeft(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainderSeconds = seconds % 60;
+            const display = `${minutes}:${remainderSeconds < 10 ? '0' : '' }${remainderSeconds}`;
+            setTimeString(display)
+            document.title = display;
+          }
+
+        displayTimeLeft(secondsLeft)
+        
+        timer = setInterval(() => {
             if(isRunning) {
-                setSeconds(seconds-1)
-                setMin(Math.floor(seconds / 60))
-                setSec(seconds % 60)
-                setTimeString(`${min}:${sec < 10 ? '0' + sec : sec}`)
+                setSecondsLeft(Math.round((then - Date.now()) / 1000))
+                displayTimeLeft(secondsLeft)
+                // check if we should stop it!
+                 if(secondsLeft < 0) {
+                 clearInterval(timer);
+                 return;
+                 }   
             }
             }, 1000)
 
@@ -32,17 +40,15 @@ export default function Timer({ title, minutes}) {
             clearInterval(timer)
         }
 
-    }, [isRunning, minutes])
+    }, [isRunning, seconds])
 
     const handleToggle = () => {
         setIsRunning(!isRunning)
     }
 
     const handleReset = () => {
-        setSeconds(minutes * 60)
-        setMin(minutes)
-        setSec('0')
-        setTimeString(`${minutes}:00`)
+        setSecondsLeft(seconds)
+        displayTimeLeft(secondsLeft)
         setIsRunning(false)
     }
 

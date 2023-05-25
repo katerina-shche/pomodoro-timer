@@ -24,7 +24,7 @@ function App() {
         <div id='session-length'>{sessionLength}</div>
         <div id='session-increment'> &lt;- </div>
       </div>
-      <Timer title={title} minutes={minutes} />
+      <Timer title={title} seconds={minutes * 60} />
       <div id='author'>Coded by<br/>Katerina-Shche</div>
       <audio id='beep'></audio>
     </div>
