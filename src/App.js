@@ -25,7 +25,7 @@ function App() {
         <div id='session-increment'> &lt;- </div>
       </div>
       <Timer title={title} minutes={minutes} />
-      <div id='author'>Coded by<br/>Keterina-Shche</div>
+      <div id='author'>Coded by<br/>Katerina-Shche</div>
       <audio id='beep'></audio>
     </div>
   );
