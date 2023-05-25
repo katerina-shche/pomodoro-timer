@@ -32,7 +32,7 @@ export default function Timer({ title, minutes}) {
             clearInterval(timer)
         }
 
-    }, [isRunning, seconds, min, sec])
+    }, [isRunning, minutes])
 
     const handleToggle = () => {
         setIsRunning(!isRunning)
