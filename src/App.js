@@ -6,7 +6,7 @@ function App() {
 
   const [title, setTitle] = useState('Session')
   const [breakLength, setBreakLenght] = useState(5)
-  const [sessionLength, setSessionLength] = useState(1)
+  const [sessionLength, setSessionLength] = useState(0.25)
   const [minutes, setMinutes] = useState(sessionLength)
 
   return (
