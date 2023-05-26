@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import Timer from './Timer';
+import beep from './assets/buzz-beep.wav'
 
 function App() {
 
@@ -26,7 +27,7 @@ function App() {
       </div>
       <Timer title={title} startSeconds={minutes * 60} />
       <div id='author'>Coded by<br/>Katerina-Shche</div>
-      <audio id='beep'></audio>
+      <audio id='beep' volume='1' src={beep}></audio>
     </div>
   );
 }

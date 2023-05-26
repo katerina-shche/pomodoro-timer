@@ -26,6 +26,10 @@ export default function Timer({ title, startSeconds }) {
                  if (secondsLeft.current <= 0) {
                     clearInterval(timer)
                     setIsRunning(false)
+                    const audio = document.querySelector('audio')
+                    console.log(audio)
+                    audio.currentTime = 0; // rewind to the start
+                    audio.play();
                     return
                     } 
                 secondsLeft.current = Math.round((then - Date.now()) / 1000)
