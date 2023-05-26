@@ -48,7 +48,7 @@ export default function Timer({ title, seconds}) {
 
     const handleReset = () => {
         setSecondsLeft(seconds)
-        displayTimeLeft(secondsLeft)
+        // displayTimeLeft(secondsLeft)
         setIsRunning(false)
     }
 
