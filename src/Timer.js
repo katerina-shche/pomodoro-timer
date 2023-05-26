@@ -52,6 +52,8 @@ export default function Timer({ title, startSeconds }) {
         setIsRunning(false)
         secondsLeft.current = startSeconds
         setTimeString(displayTimeLeft(startSeconds))
+        const audio = document.querySelector('audio')
+        audio.pause()
     }
 
   return (
