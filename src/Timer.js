@@ -1,9 +1,8 @@
-import React, { useRef } from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 //styles
 import './Timer.css'
 
-export default function Timer({ title, startSeconds}) {
+export default function Timer({ title, startSeconds }) {
     const [isRunning, setIsRunning] = useState(false)
     const secondsLeft = useRef(startSeconds)
     const displayTimeLeft = (anySeconds) => {
@@ -18,11 +17,8 @@ export default function Timer({ title, startSeconds}) {
 
     useEffect(() => {
         let timer = null
-
-            //fresh start
         const now = Date.now();
         const then = now + secondsLeft.current * 1000
-        console.log({ now, then, secondsLeft})
 
             if(isRunning) {
                 timer = setInterval(() => {
@@ -34,14 +30,11 @@ export default function Timer({ title, startSeconds}) {
                  return
                  }   
             }, 1000)
-        }
-    
-        
+            }
+
         return () => {
             clearInterval(timer)
         }
-
-    
 }, [isRunning, startSeconds])
 
   
