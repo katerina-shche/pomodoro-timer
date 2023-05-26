@@ -2,16 +2,16 @@ import React, { useState, useEffect, useRef } from 'react'
 //styles
 import './Timer.css'
 
-export default function Timer({ title, startSeconds }) {
+export default function Timer({ title, minutes }) {
     const [isRunning, setIsRunning] = useState(false)
-    const secondsLeft = useRef(startSeconds)
+    const secondsLeft = useRef(minutes * 60)
     const displayTimeLeft = (anySeconds) => {
         const minutes = Math.floor(anySeconds / 60);
         const remainderSeconds = anySeconds % 60;
         const display = `${minutes < 10 ? '0' : '' }${minutes}:${remainderSeconds < 10 ? '0' : '' }${remainderSeconds}`;
         return display
       }
-    const [timeString, setTimeString] = useState(displayTimeLeft(startSeconds))
+    const [timeString, setTimeString] = useState(displayTimeLeft(minutes * 60))
 
     
 
@@ -40,7 +40,7 @@ export default function Timer({ title, startSeconds }) {
         return () => {
             clearInterval(timer)
         }
-}, [isRunning, startSeconds])
+}, [isRunning, minutes])
 
   
 
@@ -50,8 +50,8 @@ export default function Timer({ title, startSeconds }) {
 
     const handleReset = () => {
         setIsRunning(false)
-        secondsLeft.current = startSeconds
-        setTimeString(displayTimeLeft(startSeconds))
+        secondsLeft.current = minutes * 60
+        setTimeString(displayTimeLeft(minutes * 60))
         const audio = document.querySelector('audio')
         audio.pause()
     }
