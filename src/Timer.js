@@ -1,55 +1,89 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useState, useEffect } from 'react'
 //styles
 import './Timer.css'
 
-export default function Timer({ title, seconds}) {
+export default function Timer({ title, startSeconds}) {
     const [isRunning, setIsRunning] = useState(false)
-    const [secondsLeft, setSecondsLeft] = useState(seconds)
-    const [timeString, setTimeString] = useState("")
+    const [isBeginning, setIsBeginning] = useState(true)
+    const secondsLeft = useRef(null)
+    const displayTimeLeft = (anySeconds) => {
+        const minutes = Math.floor(anySeconds / 60);
+        const remainderSeconds = anySeconds % 60;
+        const display = `${minutes < 10 ? '0' : '' }${minutes}:${remainderSeconds < 10 ? '0' : '' }${remainderSeconds}`;
+        return display
+      }
+    const [timeString, setTimeString] = useState(displayTimeLeft(startSeconds))
+
+    
 
     useEffect(() => {
         let timer = null
 
+        if(isBeginning) {
+            //fresh start
         const now = Date.now();
-        const then = now + seconds * 1000
-        
-        function displayTimeLeft(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const remainderSeconds = seconds % 60;
-            const display = `${minutes}:${remainderSeconds < 10 ? '0' : '' }${remainderSeconds}`;
-            setTimeString(display)
-            document.title = display;
-          }
+        const then = now + startSeconds * 1000
+        console.log({isBeginning, now, then, secondsLeft})
 
-        displayTimeLeft(secondsLeft)
-        
-        timer = setInterval(() => {
             if(isRunning) {
-                setSecondsLeft(Math.round((then - Date.now()) / 1000))
-                displayTimeLeft(secondsLeft)
+                timer = setInterval(() => {
+                secondsLeft.current = Math.round((then - Date.now()) / 1000)
+                setTimeString(displayTimeLeft(secondsLeft.current))
                 // check if we should stop it!
-                 if(secondsLeft < 0) {
-                 clearInterval(timer);
-                 return;
+                 if(secondsLeft.current < 0) {
+                 clearInterval(timer)
+                 return
                  }   
-            }
             }, 1000)
-
+        }
+    }
+        if(!isBeginning) {
+            //start after pause
+            console.log(secondsLeft.current)
+            const now = Date.now();
+            const then = now + secondsLeft.current * 1000
+            if(isRunning) {
+                timer = setInterval(() => {
+                secondsLeft.current = Math.round((then - Date.now()) / 1000)
+                setTimeString(displayTimeLeft(secondsLeft.current))
+                // check if we should stop it!
+                 if(secondsLeft.current < 0) {
+                 clearInterval(timer)
+                 return
+                 }   
+            }, 1000)
+        }
+        }
         return () => {
             clearInterval(timer)
         }
 
-    }, [isRunning, seconds])
+    
+}, [isRunning, isBeginning, startSeconds])
+
+  
 
     const handleToggle = () => {
-        setIsRunning(!isRunning)
+        if(!isRunning && isBeginning) {
+            setIsRunning(true)
+        } else 
+        if(isRunning && isBeginning) {
+            setIsRunning(false)
+            setIsBeginning(false)
+        } else
+        if(!isRunning && !isBeginning) {
+            setIsRunning(true)
+        } else
+        if(isRunning && !isBeginning) {
+            setIsRunning(false)
+        }
     }
 
     const handleReset = () => {
-        setSecondsLeft(seconds)
-        // displayTimeLeft(secondsLeft)
         setIsRunning(false)
+        setIsBeginning(true)
+        setTimeString(displayTimeLeft(startSeconds))
     }
 
   return (
