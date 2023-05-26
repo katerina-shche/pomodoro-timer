@@ -22,13 +22,14 @@ export default function Timer({ title, startSeconds }) {
 
             if(isRunning) {
                 timer = setInterval(() => {
-                secondsLeft.current = Math.round((then - Date.now()) / 1000)
-                setTimeString(displayTimeLeft(secondsLeft.current))
                 // check if we should stop it!
-                 if(secondsLeft.current === 0) {
-                 clearInterval(timer)
-                 return
-                 }   
+                 if (secondsLeft.current <= 0) {
+                    clearInterval(timer)
+                    setIsRunning(false)
+                    return
+                    } 
+                secondsLeft.current = Math.round((then - Date.now()) / 1000)
+                setTimeString(displayTimeLeft(secondsLeft.current))  
             }, 1000)
             }
 
