@@ -16,6 +16,9 @@ export default function Timer({ title, minutes }) {
     
 
     useEffect(() => {
+
+        // i need to compare prevMinutes and current minutes first
+        
         let timer = null
         const now = Date.now();
         const then = now + secondsLeft.current * 1000
@@ -58,7 +61,7 @@ export default function Timer({ title, minutes }) {
 
   return (
     <div id='timer'>
-        <h2 id='timer-label'>{title}</h2>
+        <h2 id='timer-label'>{title}{minutes}</h2>
         <div id='time-left'>{timeString}</div>
         <button id='start_stop' onClick={handleToggle}>{isRunning ? 'Pause' : 'Start'}</button>
         <button id='reset' onClick={handleReset}>Reset</button>

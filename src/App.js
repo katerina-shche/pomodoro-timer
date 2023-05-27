@@ -8,7 +8,7 @@ function App() {
   const [title, setTitle] = useState('Session')
   const [breakLength, setBreakLength] = useState(5)
   const [sessionLength, setSessionLength] = useState(25)
-  const [minutes, setMinutes] = useState(sessionLength)
+  const [minutes, setMinutes] = useState(25)
 
   const handleBreakDecrement = () => {
     if (breakLength > 0) {
@@ -21,11 +21,14 @@ function App() {
   const handleSessionDecrement = () => {
     if (sessionLength > 0) {
     setSessionLength(sessionLength - 1)
-    setMinutes(sessionLength)
+    setMinutes(minutes - 1)
+    console.log(minutes - 1)
   }
   }
   const handleSessionIncrement = () => {
     setSessionLength(sessionLength + 1)
+    setMinutes(minutes + 1)
+    console.log(minutes)
   }
 
   return (
@@ -43,7 +46,7 @@ function App() {
         <div id='session-length'>{sessionLength}</div>
         <div id='session-increment' onClick={handleSessionIncrement}> &lt;- </div>
       </div>
-      <Timer title = { title } minutes = { minutes } />
+      {minutes && <Timer title = {title} minutes = {minutes} />}
       <div id='author'>Coded by<br/>Katerina-Shche</div>
       <audio id='beep' volume='1' src={beep}></audio>
     </div>
