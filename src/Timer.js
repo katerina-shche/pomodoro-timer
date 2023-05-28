@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 //styles
 import './Timer.css'
 
-export default function Timer({ title, minutes }) {
+export default function Timer({ title, minutes, onReset }) {
     const prevMinutes = useRef(minutes)
     const [isRunning, setIsRunning] = useState(false)
     const secondsLeft = useRef(minutes * 60)
@@ -59,6 +59,7 @@ export default function Timer({ title, minutes }) {
 
     const handleReset = () => {
         setIsRunning(false)
+        onReset()
         secondsLeft.current = minutes * 60
         setTimeString(displayTimeLeft(minutes * 60))
         const audio = document.querySelector('audio')
@@ -67,7 +68,7 @@ export default function Timer({ title, minutes }) {
 
   return (
     <div id='timer'>
-        <h2 id='timer-label'>{title}{minutes}</h2>
+        <h2 id='timer-label'>{title}</h2>
         <div id='time-left'>{timeString}</div>
         <button id='start_stop' onClick={handleToggle}>{isRunning ? 'Pause' : 'Start'}</button>
         <button id='reset' onClick={handleReset}>Reset</button>
