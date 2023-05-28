@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import './Timer.css'
 
 export default function Timer({ title, minutes }) {
+    const prevMinutes = useRef(minutes)
     const [isRunning, setIsRunning] = useState(false)
     const secondsLeft = useRef(minutes * 60)
     const displayTimeLeft = (anySeconds) => {
@@ -16,9 +17,14 @@ export default function Timer({ title, minutes }) {
     
 
     useEffect(() => {
-
-        // i need to compare prevMinutes and current minutes first
-        
+        // comparing if prevMinutes and current minutes are different and stop and update the timer
+        if (prevMinutes.current !== minutes) {
+            secondsLeft.current = minutes * 60
+            setTimeString(displayTimeLeft(secondsLeft.current))
+            setIsRunning(false)
+            prevMinutes.current = minutes
+        }
+        // if no new minutes then everething else goes as usual
         let timer = null
         const now = Date.now();
         const then = now + secondsLeft.current * 1000
