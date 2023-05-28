@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 //styles
 import './Timer.css'
 
-export default function Timer({ title, minutes, onReset, onTimeEnd }) {
+export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwitchToSession }) {
     const prevMinutes = useRef(minutes)
     const [isRunning, setIsRunning] = useState(false)
     const secondsLeft = useRef(minutes * 60)
@@ -33,7 +33,11 @@ export default function Timer({ title, minutes, onReset, onTimeEnd }) {
                 timer = setInterval(() => {
                 // check if we should stop it!
                  if (secondsLeft.current <= 0) {
-                    onTimeEnd()
+                    if (title === "Session") {
+                        onSwitchToBreak()
+                    } else {
+                        onSwitchToSession()
+                    }
                     secondsLeft.current = minutes * 60
                     setTimeString(displayTimeLeft(secondsLeft.current))
                     setIsRunning(true)
@@ -50,7 +54,7 @@ export default function Timer({ title, minutes, onReset, onTimeEnd }) {
         return () => {
             clearInterval(timer)
         }
-}, [isRunning, minutes, onTimeEnd])
+}, [isRunning, minutes, onSwitchToBreak, title, onSwitchToSession])
 
   
 
