@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 //styles
 import './Timer.css'
 
-export default function Timer({ title, minutes, onReset }) {
+export default function Timer({ title, minutes, onReset, onTimeEnd }) {
     const prevMinutes = useRef(minutes)
     const [isRunning, setIsRunning] = useState(false)
     const secondsLeft = useRef(minutes * 60)
@@ -33,10 +33,11 @@ export default function Timer({ title, minutes, onReset }) {
                 timer = setInterval(() => {
                 // check if we should stop it!
                  if (secondsLeft.current <= 0) {
-                    clearInterval(timer)
-                    setIsRunning(false)
+                    onTimeEnd()
+                    secondsLeft.current = minutes * 60
+                    setTimeString(displayTimeLeft(secondsLeft.current))
+                    setIsRunning(true)
                     const audio = document.querySelector('audio')
-                    console.log(audio)
                     audio.currentTime = 0; // rewind to the start
                     audio.play();
                     return
@@ -45,11 +46,11 @@ export default function Timer({ title, minutes, onReset }) {
                 setTimeString(displayTimeLeft(secondsLeft.current))  
             }, 1000)
             }
-
+            
         return () => {
             clearInterval(timer)
         }
-}, [isRunning, minutes])
+}, [isRunning, minutes, onTimeEnd])
 
   
 
@@ -59,6 +60,7 @@ export default function Timer({ title, minutes, onReset }) {
 
     const handleReset = () => {
         setIsRunning(false)
+        //uppdating min to 5 and 25 in App.js
         onReset()
         secondsLeft.current = minutes * 60
         setTimeString(displayTimeLeft(minutes * 60))

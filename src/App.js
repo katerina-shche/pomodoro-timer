@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import './App.css';
 import Timer from './Timer';
 import beep from './assets/buzz-beep.wav'
@@ -9,6 +9,16 @@ function App() {
   const [breakLength, setBreakLength] = useState(5)
   const [sessionLength, setSessionLength] = useState(25)
   const [minutes, setMinutes] = useState(25)
+  const onTimeEnd = () => {
+    if (title === 'Session') {
+      setTitle('Break')
+      setMinutes(breakLength)
+    } else {
+      setTitle('Session')
+      setMinutes(sessionLength)
+    }
+  }
+  const onTimeEndRef = useRef(onTimeEnd)
 
   const onReset = () => {
     setBreakLength(5)
@@ -19,6 +29,7 @@ function App() {
       setMinutes(5)
     }
   }
+ 
 
   const handleBreakDecrement = () => {
     if (breakLength > 0) {
@@ -32,13 +43,11 @@ function App() {
     if (sessionLength > 0) {
     setSessionLength(sessionLength - 1)
     setMinutes(minutes - 1)
-    console.log(minutes - 1)
   }
   }
   const handleSessionIncrement = () => {
     setSessionLength(sessionLength + 1)
     setMinutes(minutes + 1)
-    console.log(minutes)
   }
 
   return (
@@ -56,7 +65,7 @@ function App() {
         <div id='session-length'>{sessionLength}</div>
         <div id='session-increment' onClick={handleSessionIncrement}> &lt;- </div>
       </div>
-      {minutes && <Timer title = {title} minutes = {minutes} onReset={onReset}/>}
+       <Timer title={title} minutes={minutes} onReset={onReset} onTimeEnd={onTimeEndRef.current}/>
       <div id='author'>Coded by<br/>Katerina-Shche</div>
       <audio id='beep' volume='1' src={beep}></audio>
     </div>
