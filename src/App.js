@@ -9,6 +9,7 @@ function App() {
   const [breakLength, setBreakLength] = useState(5)
   const [sessionLength, setSessionLength] = useState(25)
   const [minutes, setMinutes] = useState(25)
+  const [isDisabled, setIsDisabled] = useState(false)
   const onSwitchToBreak = () => {
       setTitle('Break')
       setMinutes(breakLength)
@@ -16,10 +17,10 @@ function App() {
   const onSwitchToSession = () => {
       setTitle('Session')
       setMinutes(sessionLength)
-    }
-    
-  
-
+    } 
+  const onIsRunning = (isRunning) => {
+    setIsDisabled(isRunning)
+  }
   const onReset = () => {
     setBreakLength(5)
     setSessionLength(25)
@@ -29,8 +30,6 @@ function App() {
       setMinutes(5)
     }
   }
- 
-
   const handleBreakDecrement = () => {
     if (breakLength > 0) {
     setBreakLength(breakLength - 1)
@@ -55,17 +54,17 @@ function App() {
      <h1 id='main-titile'>25 + 5 clock</h1>
      <div id='break-box'>
         <h2 id='break-label'>Break Length</h2> 
-        <div id='break-decrement' onClick={handleBreakDecrement}> -&gt; </div>
+        <button id='break-decrement' onClick={handleBreakDecrement} disabled={isDisabled}> -&gt; </button>
         <div id='break-length'>{breakLength}</div>
-        <div id='break-increment' onClick={handleBreakIncrement}> &lt;- </div>
+        <button id='break-increment' onClick={handleBreakIncrement} disabled={isDisabled}> &lt;- </button>
      </div>
      <div id='session-box'>
       <h1 id='session-label'>Session Length</h1>
-        <div id='session-decrement' onClick={handleSessionDecrement}> -&gt; </div>
+        <button id='session-decrement' onClick={handleSessionDecrement} disabled={isDisabled}> -&gt; </button>
         <div id='session-length'>{sessionLength}</div>
-        <div id='session-increment' onClick={handleSessionIncrement}> &lt;- </div>
+        <button id='session-increment' onClick={handleSessionIncrement} disabled={isDisabled}> &lt;- </button>
       </div>
-       <Timer title={title} minutes={minutes} onReset={onReset} onSwitchToSession={onSwitchToSession} onSwitchToBreak={onSwitchToBreak}/>
+       <Timer title={title} minutes={minutes} onReset={onReset} onSwitchToSession={onSwitchToSession} onSwitchToBreak={onSwitchToBreak} onIsRunning={onIsRunning}/>
       <div id='author'>Coded by<br/>Katerina-Shche</div>
       <audio id='beep' volume='1' src={beep}></audio>
     </div>
