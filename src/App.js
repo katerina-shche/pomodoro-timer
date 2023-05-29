@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import './App.css';
 import Timer from './Timer';
 import beep from './assets/buzz-beep.wav'
