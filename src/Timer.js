@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 //styles
 import './Timer.css'
 
-export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwitchToSession }) {
+export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwitchToSession, onIsRunning }) {
     const prevMinutes = useRef(minutes)
     const prevTitle = useRef(title)
     const [isRunning, setIsRunning] = useState(false)
@@ -24,6 +24,7 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
             setTimeString(displayTimeLeft(secondsLeft.current))
             prevMinutes.current = minutes
         }
+        // tracking title switch
         if (prevTitle.current !== title) {
             secondsLeft.current = minutes * 60
             setTimeString(displayTimeLeft(secondsLeft.current))
@@ -46,12 +47,9 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
                     } else {
                         onSwitchToSession()
                     }
-                    
                     const audio = document.querySelector('audio')
                     audio.currentTime = 0; // rewind to the start
                     audio.play();
-                    secondsLeft.current = minutes * 60
-
                     } 
                 secondsLeft.current = Math.round((then - Date.now()) / 1000)
                 setTimeString(displayTimeLeft(secondsLeft.current))  
@@ -67,10 +65,12 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
 
     const handleToggle = () => {
         setIsRunning(!isRunning)
+        onIsRunning(!isRunning)
     }
 
     const handleReset = () => {
         setIsRunning(false)
+        onIsRunning(false)
         //uppdating min to 5 and 25 in App.js
         onReset()
         secondsLeft.current = minutes * 60
