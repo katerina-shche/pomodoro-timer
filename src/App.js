@@ -2,6 +2,9 @@ import { useState } from 'react';
 import './App.css';
 import Timer from './Timer';
 import beep from './assets/buzz-beep.wav'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import { faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
 function App() {
 
@@ -54,15 +57,15 @@ function App() {
      <h1 id='main-titile'>25 + 5 clock</h1>
      <div id='break-box'>
         <h2 id='break-label'>Break Length</h2> 
-        <button id='break-decrement' onClick={handleBreakDecrement} disabled={isDisabled}> -&gt; </button>
+        <button id='break-decrement' onClick={handleBreakDecrement} disabled={isDisabled}><FontAwesomeIcon icon={faAngleDown} /></button>
         <div id='break-length'>{breakLength}</div>
-        <button id='break-increment' onClick={handleBreakIncrement} disabled={isDisabled}> &lt;- </button>
+        <button id='break-increment' onClick={handleBreakIncrement} disabled={isDisabled}><FontAwesomeIcon icon={faAngleUp} /></button>
      </div>
      <div id='session-box'>
-      <h1 id='session-label'>Session Length</h1>
-        <button id='session-decrement' onClick={handleSessionDecrement} disabled={isDisabled}> -&gt; </button>
+      <h2 id='session-label'>Session Length</h2>
+        <button id='session-decrement' onClick={handleSessionDecrement} disabled={isDisabled}><FontAwesomeIcon icon={faAngleDown} /></button>
         <div id='session-length'>{sessionLength}</div>
-        <button id='session-increment' onClick={handleSessionIncrement} disabled={isDisabled}> &lt;- </button>
+        <button id='session-increment' onClick={handleSessionIncrement} disabled={isDisabled}><FontAwesomeIcon icon={faAngleUp} /></button>
       </div>
        <Timer title={title} minutes={minutes} onReset={onReset} onSwitchToSession={onSwitchToSession} onSwitchToBreak={onSwitchToBreak} onIsRunning={onIsRunning}/>
       <div id='author'>Coded by<br/>Katerina-Shche</div>
