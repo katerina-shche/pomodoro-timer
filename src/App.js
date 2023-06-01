@@ -57,15 +57,19 @@ function App() {
      <h1 id='main-titile'>25 + 5 clock</h1>
      <div id='break-box'>
         <h2 id='break-label'>Break Length</h2> 
-        <button id='break-decrement' onClick={handleBreakDecrement} disabled={isDisabled}><FontAwesomeIcon icon={faAngleDown} /></button>
-        <div id='break-length'>{breakLength}</div>
-        <button id='break-increment' onClick={handleBreakIncrement} disabled={isDisabled}><FontAwesomeIcon icon={faAngleUp} /></button>
-     </div>
+        <div className='toolbox'>
+          <button id='break-decrement' className='btn' onClick={handleBreakDecrement} disabled={isDisabled}><FontAwesomeIcon icon={faAngleDown} className='icon'/></button>
+          <div id='break-length'>{breakLength}</div>
+          <button id='break-increment' className='btn' onClick={handleBreakIncrement} disabled={isDisabled}><FontAwesomeIcon icon={faAngleUp} className='icon'/></button>
+        </div>
+      </div>
      <div id='session-box'>
-      <h2 id='session-label'>Session Length</h2>
-        <button id='session-decrement' onClick={handleSessionDecrement} disabled={isDisabled}><FontAwesomeIcon icon={faAngleDown} /></button>
-        <div id='session-length'>{sessionLength}</div>
-        <button id='session-increment' onClick={handleSessionIncrement} disabled={isDisabled}><FontAwesomeIcon icon={faAngleUp} /></button>
+        <h2 id='session-label'>Session Length</h2>
+        <div className='toolbox'>
+          <button id='session-decrement' className='btn' onClick={handleSessionDecrement} disabled={isDisabled}><FontAwesomeIcon icon={faAngleDown} className='icon'/></button>
+          <div id='session-length'>{sessionLength}</div>
+          <button id='session-increment' className='btn' onClick={handleSessionIncrement} disabled={isDisabled}><FontAwesomeIcon icon={faAngleUp} className='icon'/></button>
+        </div>
       </div>
        <Timer title={title} minutes={minutes} onReset={onReset} onSwitchToSession={onSwitchToSession} onSwitchToBreak={onSwitchToBreak} onIsRunning={onIsRunning}/>
       <div id='author'>Coded by<br/>Katerina-Shche</div>
