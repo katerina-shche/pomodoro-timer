@@ -16,3 +16,8 @@
     font-size: 3rem;
 }
 
+#start_stop, #reset {
+    background-color: aqua;
+    
+}
+
