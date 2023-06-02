@@ -1,6 +1,6 @@
-#timer {
+#timer-frame {
     width: 30vw;
-    height: 25vh;
+    height: 20vh;
     margin: 0 auto;
     background-color: var(--main-color);
     border-radius: 30px;
@@ -13,11 +13,24 @@
 }
 #time-left {
     color: var(--title-color);
-    font-size: 3rem;
+    font-size: 5rem;
 }
 
+#button-box {
+    display: flex;
+    flex-flow: row nowrap;
+    margin: 5px auto;
+    width: 30vw;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+}
 #start_stop, #reset {
-    background-color: aqua;
-    
+    flex-basis: 1;
+    height: 10vh;
+    padding-left: 5px;
+    padding-right: 5px;
+    align-self: center;
+    justify-self: center;
 }
 

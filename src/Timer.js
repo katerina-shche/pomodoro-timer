@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 //styles
 import './Timer.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPause } from '@fortawesome/free-solid-svg-icons'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
 
 export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwitchToSession, onIsRunning }) {
     const prevMinutes = useRef(minutes)
@@ -81,10 +85,14 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
 
   return (
     <div id='timer'>
-        <h2 id='timer-label'>{title}</h2>
-        <div id='time-left'>{timeString}</div>
-        <button id='start_stop' onClick={handleToggle}>{isRunning ? 'Pause' : 'Start'}</button>
-        <button id='reset' onClick={handleReset}>Reset</button>
+        <div id='timer-frame'>
+            <h2 id='timer-label'>{title}</h2>
+            <div id='time-left'>{timeString}</div>
+        </div>
+        <div id='button-box'>
+            <button id='start_stop' className="icon" onClick={handleToggle}>{isRunning ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}</button>
+            <button id='reset' className="icon" onClick={handleReset}><FontAwesomeIcon icon={faPowerOff} /></button>
+        </div>
     </div>
   )
 }

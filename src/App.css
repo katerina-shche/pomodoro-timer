@@ -17,6 +17,7 @@ html, body {
 .App {
   width: 100vw;
   height: 100vh;
+  padding-top: 10vh;
   background-color: var(--main-color);
   text-align: center;
 }
@@ -24,39 +25,60 @@ h1, h2 {
   color: var(--title-color);
   display: block;
 }
+h1 {
+  padding-bottom: 5vh;
+  font-size: 60px;
+}
+#adjustments {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: center;
+ }
 #break-box, #session-box {
+  flex-basis: 1;
   width: 30vw;
   height: 10vh;
-  margin: 0 auto;
+  margin: 0 10px;
   background-color: var(--main-color);
-  border-radius: 30px;
-  border: 5px var(--border-color) solid;
+ /* border-radius: 30px;
+  border: 5px var(--border-color) solid;*/
 }
 .toolbox {
   display: flex;
   flex-flow: row nowrap;
   width: 30vw;
   height: 40px;
+  justify-content: center;
 }
  #session-length, #break-length {
   flex-basis: 1;
-  width: 30%;
+  width: 10%. b;
   height: 100%;
 }
-#session-decrement, #session-increment, #break-decrement, #break-increment {
+button {
   background-color: transparent;
   border: none;
   cursor: pointer;
+}
+#session-decrement, #session-increment, #break-decrement, #break-increment {
   flex-basis: 1;
-  width: 30%;
+  width: 10%;
   height: 100%;
 }
 
 .icon {
-  font-size: 24px;
+  font-size: 30px;
   color: var(--title-color);
   opacity: 1;
 }
-.icon:hover {
-  font-size: 30px;
+.btn .icon:hover {
+  font-size: 36px;
 }
+
+#break-length, #session-length {
+  font-size: 30px;
+  color: var(--title-color);
+}
+
+
