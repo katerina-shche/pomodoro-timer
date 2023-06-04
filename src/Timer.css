@@ -28,6 +28,9 @@
 #start_stop, #reset {
     flex-basis: 1;
     height: 10vh;
+    width: 50vw;
+    justify-content: center;
+    align-content: center;
     padding-left: 5px;
     padding-right: 5px;
     align-self: center;
