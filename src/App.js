@@ -39,7 +39,7 @@ function App() {
   }
   }
   const handleBreakIncrement = () => {
-    if (breakLength < 59) {
+    if (breakLength < 60) {
     setBreakLength(breakLength + 1)
   }
   }
@@ -50,7 +50,7 @@ function App() {
   }
   }
   const handleSessionIncrement = () => {
-    if (sessionLength < 59) {
+    if (sessionLength < 60) {
     setSessionLength(sessionLength + 1)
     setMinutes(minutes + 1)
   }
