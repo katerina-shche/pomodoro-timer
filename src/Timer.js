@@ -22,6 +22,7 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
     
 
     useEffect(() => {
+        const audio = document.querySelector('audio')
         // comparing if prevMinutes and current minutes are different and stop and update the timer
         if (prevMinutes.current !== minutes) {
             secondsLeft.current = minutes * 60
@@ -51,7 +52,6 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
                     } else {
                         onSwitchToSession()
                     }
-                    const audio = document.querySelector('audio')
                     audio.currentTime = 0; // rewind to the start
                     audio.play();
                     } 
@@ -72,13 +72,15 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
         onIsRunning(!isRunning)
     }
 
-    const handleReset = () => {
+    const handleReset = (timer) => {
+        clearInterval(timer)
         setIsRunning(false)
         onIsRunning(false)
         //uppdating min to 5 and 25 in App.js
         onReset()
-        secondsLeft.current = minutes * 60
-        setTimeString(displayTimeLeft(minutes * 60))
+        secondsLeft.current = 25 * 60
+        setTimeString(displayTimeLeft(25 * 60))
+        onSwitchToSession()
         const audio = document.querySelector('audio')
         if (!audio.paused) {
             audio.pause()
