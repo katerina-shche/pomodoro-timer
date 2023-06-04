@@ -80,7 +80,10 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
         secondsLeft.current = minutes * 60
         setTimeString(displayTimeLeft(minutes * 60))
         const audio = document.querySelector('audio')
-        audio.pause()
+        if (!audio.paused) {
+            audio.pause()
+        }
+        audio.currentTime = 0; // rewind to the start
     }
 
   return (
