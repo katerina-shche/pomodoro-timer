@@ -34,7 +34,7 @@ function App() {
     }
   }
   const handleBreakDecrement = () => {
-    if (breakLength > 0) {
+    if (breakLength > 1) {
     setBreakLength(breakLength - 1)
   }
   }
@@ -42,7 +42,7 @@ function App() {
     setBreakLength(breakLength + 1)
   }
   const handleSessionDecrement = () => {
-    if (sessionLength > 0) {
+    if (sessionLength > 1) {
     setSessionLength(sessionLength - 1)
     setMinutes(minutes - 1)
   }
