@@ -46,7 +46,8 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
                 // check if we should stop it!
                  if (secondsLeft.current <= 0) {
                     setTimeString('00:00')
-                    secondsLeft.current = NaN
+                    //here was NaN before
+                    secondsLeft.current = 0
                     if (title === "Session") {
                         onSwitchToBreak()
                     } else {
@@ -83,7 +84,8 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
         onSwitchToSession()
         const audio = document.querySelector('audio')
         if (!audio.paused) {
-            audio.pause()
+            setTimeout(audio.pause(), 2000)
+            
         }
         audio.currentTime = 0; // rewind to the start
     }
