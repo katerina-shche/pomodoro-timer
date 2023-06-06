@@ -7,7 +7,7 @@ import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
 function App() {
-
+  
   const [title, setTitle] = useState('Session')
   const [breakLength, setBreakLength] = useState(5)
   const [sessionLength, setSessionLength] = useState(25)

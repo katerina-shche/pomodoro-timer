@@ -6,18 +6,22 @@ import { faPause } from '@fortawesome/free-solid-svg-icons'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
 
-export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwitchToSession, onIsRunning }) {
+export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBreak, onSwitchToSession, onIsRunning }) {
     const prevMinutes = useRef(minutes)
     const prevTitle = useRef(title)
     const [isRunning, setIsRunning] = useState(false)
     const secondsLeft = useRef(minutes * 60)
     const displayTimeLeft = (anySeconds) => {
+        if (anySeconds < 0) {
+            anySeconds = 0
+        }
         const minutes = Math.floor(anySeconds / 60);
         const remainderSeconds = anySeconds % 60;
         const display = `${minutes < 10 ? '0' : '' }${minutes}:${remainderSeconds < 10 ? '0' : '' }${remainderSeconds}`;
         return display
       }
     const [timeString, setTimeString] = useState(displayTimeLeft(minutes * 60))
+    const [isPlaying, setIsPlaying] = useState(false)
 
     
 
@@ -46,15 +50,26 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
                 // check if we should stop it!
                  if (secondsLeft.current <= 0) {
                     setTimeString('00:00')
-                    //here was NaN before
-                    secondsLeft.current = 0
+                    //here was 0 before and it leads to -1
+                    secondsLeft.current = NaN
+                    clearInterval(timer)
                     if (title === "Session") {
                         onSwitchToBreak()
                     } else {
                         onSwitchToSession()
                     }
                     audio.currentTime = 0; // rewind to the start
-                    audio.play();
+                    audio.play()
+                    .then(() => {
+                        setIsPlaying(true)
+                        console.log('Playback started successfully');
+                        // Additional actions after successful playback
+                      })
+                      .catch(error => {
+                        setIsPlaying(false)
+                        console.log('Failed to start playback:', error);
+                        // Additional error handling or fallback behavior
+                      });
                     } 
                 secondsLeft.current = Math.round((then - Date.now()) / 1000)
                 setTimeString(displayTimeLeft(secondsLeft.current))  
@@ -64,7 +79,7 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
         return () => {
             clearInterval(timer)
         }
-}, [isRunning, minutes, onSwitchToBreak, title, onSwitchToSession])
+}, [isRunning, minutes, onSwitchToBreak, title, onSwitchToSession, audioRef])
 
   
 
@@ -83,9 +98,10 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
         setTimeString(displayTimeLeft(25 * 60))
         onSwitchToSession()
         const audio = document.querySelector('audio')
-        if (!audio.paused) {
-            setTimeout(audio.pause(), 2000)
-            
+        if (isPlaying) {
+            audio.pause()
+            console.log('audio has been paused')
+            setIsPlaying(false)
         }
         audio.currentTime = 0; // rewind to the start
     }
