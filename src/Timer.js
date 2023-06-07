@@ -61,12 +61,12 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
                     audio.currentTime = 0; // rewind to the start
                     audio.play()
                     .then(() => {
-                        setIsPlaying(true)
+                        //setIsPlaying(true)
                         console.log('Playback started successfully');
                         // Additional actions after successful playback
                       })
                       .catch(error => {
-                        setIsPlaying(false)
+                        //setIsPlaying(false)
                         console.log('Failed to start playback:', error);
                         // Additional error handling or fallback behavior
                       });
@@ -79,7 +79,7 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
         return () => {
             clearInterval(timer)
         }
-}, [isRunning, minutes, onSwitchToBreak, title, onSwitchToSession, audioRef])
+}, [isRunning, minutes, onSwitchToBreak, title, onSwitchToSession])
 
   
 
@@ -98,11 +98,10 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
         setTimeString(displayTimeLeft(25 * 60))
         onSwitchToSession()
         const audio = document.querySelector('audio')
-        if (isPlaying) {
-            audio.pause()
-            console.log('audio has been paused')
-            setIsPlaying(false)
-        }
+        //if (isPlaying)
+        audio.pause()
+        console.log('audio has been paused')
+        setIsPlaying(false)
         audio.currentTime = 0; // rewind to the start
     }
 

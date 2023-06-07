@@ -79,7 +79,7 @@ function App() {
       </div>
        <Timer title={title} minutes={minutes} onReset={onReset} onSwitchToSession={onSwitchToSession} onSwitchToBreak={onSwitchToBreak} onIsRunning={onIsRunning}/>
       <div id='author'>Coded by<br/>Katerina-Shche</div>
-      <audio id='beep' volume='1' src={beep}></audio>
+      <audio id='beep' volume='1' src={beep}> </audio>
     </div>
   );
 }
