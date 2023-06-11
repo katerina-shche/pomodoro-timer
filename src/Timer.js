@@ -40,7 +40,7 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
             prevMinutes.current = minutes
             prevTitle.current = title
         }
-        // if no new minutes then everething else goes as usual
+        // if no new minutes or titles then everething else goes as usual
         let timer = null
         const now = Date.now();
         const then = now + secondsLeft.current * 1000
@@ -50,36 +50,35 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
                 // check if we should stop it!
                  if (secondsLeft.current <= 0) {
                     setTimeString('00:00')
-                    //here was 0 before and it leads to -1
-                    secondsLeft.current = NaN
+                   // secondsLeft.current = NaN
                     clearInterval(timer)
                     if (title === "Session") {
                         onSwitchToBreak()
                     } else {
                         onSwitchToSession()
-                    }
+                    } 
+                    if (!isPlaying) {
                     audio.currentTime = 0; // rewind to the start
                     audio.play()
                     .then(() => {
-                        //setIsPlaying(true)
-                        console.log('Playback started successfully');
-                        // Additional actions after successful playback
+                        console.log('Playback started successfully')
+                        setIsPlaying(true)
                       })
                       .catch(error => {
-                        //setIsPlaying(false)
-                        console.log('Failed to start playback:', error);
-                        // Additional error handling or fallback behavior
+                        console.log('Failed to start playback:', error)
                       });
-                    } 
+                    }
+                    } else {
                 secondsLeft.current = Math.round((then - Date.now()) / 1000)
                 setTimeString(displayTimeLeft(secondsLeft.current))  
-            }, 1000)
+            }
+        }, 1000)
             }
             
         return () => {
             clearInterval(timer)
         }
-}, [isRunning, minutes, onSwitchToBreak, title, onSwitchToSession])
+}, [isPlaying, isRunning, minutes, onSwitchToBreak, title, onSwitchToSession])
 
   
 
@@ -98,7 +97,6 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
         setTimeString(displayTimeLeft(25 * 60))
         onSwitchToSession()
         const audio = document.querySelector('audio')
-        //if (isPlaying)
         audio.pause()
         console.log('audio has been paused')
         setIsPlaying(false)
