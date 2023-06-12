@@ -84,7 +84,7 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
                             console.log('undefined title')
                     }
                    
-                }, 500)
+                }, 550)
                     } 
 
                 secondsLeft.current = Math.round((then - Date.now()) / 1000)
