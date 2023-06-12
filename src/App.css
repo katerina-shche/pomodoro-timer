@@ -53,7 +53,7 @@ h1 {
 }
  #session-length, #break-length {
   flex-basis: 1;
-  width: 10%. b;
+  width: 10%;
   height: 100%;
 }
 button {

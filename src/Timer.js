@@ -7,6 +7,8 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
 
 export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBreak, onSwitchToSession, onIsRunning }) {
+    const delay = useRef(false)
+    const timer = useRef(false)
     const prevMinutes = useRef(minutes)
     const prevTitle = useRef(title)
     const [isRunning, setIsRunning] = useState(false)
@@ -41,22 +43,22 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
             prevTitle.current = title
         }
         // if no new minutes or titles then everething else goes as usual
-        let timer = null
+        //let timer = null
         const now = Date.now();
         const then = now + secondsLeft.current * 1000
 
             if(isRunning) {
-                timer = setInterval(() => {
+                timer.current = setInterval(() => {
                 // check if we should stop it!
                  if (secondsLeft.current <= 0) {
                     setTimeString('00:00')
-                    clearInterval(timer)
+                   
                     //if (title === "Session") {
                     //    onSwitchToBreak()
                     //} else {
                     //    onSwitchToSession()
                     //} 
-                    let delay = setInterval(() => {
+                    delay.current = setTimeout(() => {
                         if (!isPlaying) {
                             audio.currentTime = 0; // rewind to the start
                             audio.play()
@@ -69,7 +71,8 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
                                 console.log('Failed to start playback:', error)
                               });
                             }
-                            
+                            clearInterval(timer.current)
+
                     switch(title) {
                         case('Session'):
                             onSwitchToBreak();
@@ -80,8 +83,8 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
                         default:
                             console.log('undefined title')
                     }
-                    clearInterval(delay)
-                }, 1000)
+                   
+                }, 450)
                     } 
 
                 secondsLeft.current = Math.round((then - Date.now()) / 1000)
@@ -91,7 +94,7 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
             }
             
         return () => {
-            clearInterval(timer)
+            clearInterval(timer.current)
         }
 }, [isPlaying, isRunning, minutes, onSwitchToBreak, title, onSwitchToSession])
 
@@ -102,8 +105,11 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
         onIsRunning(!isRunning)
     }
 
-    const handleReset = (timer) => {
-        clearInterval(timer)
+    const handleReset = () => {
+        console.log(delay.current)
+        console.log(timer.current)
+        clearInterval(timer.current)
+       clearTimeout(delay.current)
         setIsRunning(false)
         onIsRunning(false)
         //uppdating min to 5 and 25 in App.js
