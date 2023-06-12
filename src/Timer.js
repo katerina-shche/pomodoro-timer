@@ -59,6 +59,7 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
                     //    onSwitchToSession()
                     //} 
                     delay.current = setTimeout(() => {
+                        if (secondsLeft.current <= 0) {
                         if (!isPlaying) {
                             audio.currentTime = 0; // rewind to the start
                             audio.play()
@@ -70,6 +71,7 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
                             .catch(error => {
                                 console.log('Failed to start playback:', error)
                               });
+                            
                             }
                             clearInterval(timer.current)
 
@@ -83,8 +85,9 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
                         default:
                             console.log('undefined title')
                     }
+                 } else clearTimeout(delay)
                    
-                }, 750)
+                }, 1000)
                     } 
 
                 secondsLeft.current = Math.round((then - Date.now()) / 1000)
