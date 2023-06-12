@@ -50,28 +50,43 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
                 // check if we should stop it!
                  if (secondsLeft.current <= 0) {
                     setTimeString('00:00')
-                   // secondsLeft.current = NaN
                     clearInterval(timer)
-                    if (title === "Session") {
-                        onSwitchToBreak()
-                    } else {
-                        onSwitchToSession()
-                    } 
-                    if (!isPlaying) {
-                    audio.currentTime = 0; // rewind to the start
-                    audio.play()
-                    .then(() => {
-                        console.log('Playback started successfully')
-                        setIsPlaying(true)
-                      })
-                      .catch(error => {
-                        console.log('Failed to start playback:', error)
-                      });
+                    //if (title === "Session") {
+                    //    onSwitchToBreak()
+                    //} else {
+                    //    onSwitchToSession()
+                    //} 
+                    let delay = setInterval(() => {
+                        if (!isPlaying) {
+                            audio.currentTime = 0; // rewind to the start
+                            audio.play()
+                            .then(() => {
+                                console.log('Playback started successfully')
+                                setIsPlaying(true)
+                                audio.addEventListener('ended', () => setIsPlaying(false))
+                              })
+                            .catch(error => {
+                                console.log('Failed to start playback:', error)
+                              });
+                            }
+                            
+                    switch(title) {
+                        case('Session'):
+                            onSwitchToBreak();
+                            break;
+                        case('Break'):
+                            onSwitchToSession();
+                            break;
+                        default:
+                            console.log('undefined title')
                     }
-                    } else {
+                    clearInterval(delay)
+                }, 1000)
+                    } 
+
                 secondsLeft.current = Math.round((then - Date.now()) / 1000)
                 setTimeString(displayTimeLeft(secondsLeft.current))  
-            }
+            
         }, 1000)
             }
             

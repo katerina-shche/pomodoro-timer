@@ -80,5 +80,7 @@ button {
   font-size: 30px;
   color: var(--title-color);
 }
-
+#author {
+  color: var(--border-color)
+}
 
