@@ -43,19 +43,19 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
             prevTitle.current = title
         }
         // if no new minutes or titles then everething else goes as usual
-        //let timer = null
+        // setting starting and ending point of the timer
         const now = Date.now();
         const then = now + secondsLeft.current * 1000
 
             if(isRunning) {
                 timer.current = setInterval(() => {
-                // check if we should stop it!
+                // check if we should finish this session
                  if (secondsLeft.current <= 0) {
                     setTimeString('00:00')
-                    setIsRunning(false)
-                   
- 
+                    //setIsRunning(false) dont need this
+                    //make sure that 00:00 will stay for 1000 ms
                     delay.current = setTimeout(() => {
+                        //make sure nobody switched/reseted the timer
                         if (secondsLeft.current <= 0) {
                         if (!isPlaying) {
                             audio.currentTime = 0; // rewind to the start
@@ -70,24 +70,25 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
                               });
                             
                             }
-                            clearInterval(timer.current)
 
-                    switch(title) {
-                        case('Session'):
-                            onSwitchToBreak();
-                            break;
-                        case('Break'):
-                            onSwitchToSession();
-                            break;
-                        default:
-                            console.log('undefined title')
-                    }
-                    setIsRunning(true)
+                        clearInterval(timer.current)
+                        
+                        switch(title) {
+                            case('Session'):
+                                onSwitchToBreak();
+                                break;
+                            case('Break'):
+                                onSwitchToSession();
+                                break;
+                            default:
+                                console.log('undefined title')
+                        }
+                    //setIsRunning(true) dont need this
                  } else clearTimeout(delay)
                    
-                }, 1001)
+                }, 1000)
                     } 
-
+                    //the ordinary timer countdown:
                 secondsLeft.current = Math.round((then - Date.now()) / 1000)
                 setTimeString(displayTimeLeft(secondsLeft.current))  
             
@@ -107,12 +108,10 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
     }
 
     const handleReset = () => {
-        console.log(delay.current)
-        console.log(timer.current)
         clearInterval(timer.current)
         clearTimeout(delay.current)
         setIsRunning(false)
-        onIsRunning(false, timeString)
+        onIsRunning(false)
         //uppdating min to 5 and 25 in App.js
         onReset()
         secondsLeft.current = 25 * 60
