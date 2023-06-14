@@ -76,6 +76,11 @@ button {
   font-size: 36px;
 }
 
+.btn:disabled .icon {
+  color: red;
+  cursor: not-allowed;
+}
+
 #break-length, #session-length {
   font-size: 30px;
   color: var(--title-color);

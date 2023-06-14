@@ -6,7 +6,7 @@ import { faPause } from '@fortawesome/free-solid-svg-icons'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
 
-export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBreak, onSwitchToSession, onIsRunning }) {
+export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwitchToSession, onIsRunning }) {
     const delay = useRef(false)
     const timer = useRef(false)
     const prevMinutes = useRef(minutes)
@@ -52,12 +52,9 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
                 // check if we should stop it!
                  if (secondsLeft.current <= 0) {
                     setTimeString('00:00')
+                    setIsRunning(false)
                    
-                    //if (title === "Session") {
-                    //    onSwitchToBreak()
-                    //} else {
-                    //    onSwitchToSession()
-                    //} 
+ 
                     delay.current = setTimeout(() => {
                         if (secondsLeft.current <= 0) {
                         if (!isPlaying) {
@@ -85,9 +82,10 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
                         default:
                             console.log('undefined title')
                     }
+                    setIsRunning(true)
                  } else clearTimeout(delay)
                    
-                }, 1000)
+                }, 1001)
                     } 
 
                 secondsLeft.current = Math.round((then - Date.now()) / 1000)
@@ -105,16 +103,16 @@ export default function Timer({ audioRef, title, minutes, onReset, onSwitchToBre
 
     const handleToggle = () => {
         setIsRunning(!isRunning)
-        onIsRunning(!isRunning)
+        onIsRunning(!isRunning, timeString)
     }
 
     const handleReset = () => {
         console.log(delay.current)
         console.log(timer.current)
         clearInterval(timer.current)
-       clearTimeout(delay.current)
+        clearTimeout(delay.current)
         setIsRunning(false)
-        onIsRunning(false)
+        onIsRunning(false, timeString)
         //uppdating min to 5 and 25 in App.js
         onReset()
         secondsLeft.current = 25 * 60
