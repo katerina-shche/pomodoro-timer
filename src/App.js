@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import './App.css';
-import Timer from './Timer';
+import { useTimer } from './hooks/useTimer';
+import Timer from './components/Timer';
 import beep from './assets/buzz-beep.wav'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
@@ -8,6 +9,7 @@ import { faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
 function App() {
   
+  const { color, changeColor } = useTimer()
   const [title, setTitle] = useState('Session')
   const [breakLength, setBreakLength] = useState(5)
   const [sessionLength, setSessionLength] = useState(25)
@@ -59,8 +61,8 @@ function App() {
   }
 
   return (
-    <div className="App">
-     <h1 id='main-titile'>25 + 5 clock</h1>
+    <div className="App" style={{ background: color }}>
+     <h1 id='main-titile' onClick={() => changeColor('pink')}>25 + 5 clock</h1>
      <div id='adjustments'>
         <div id='break-box'>
           <h2 id='break-label'>Break Length</h2> 
