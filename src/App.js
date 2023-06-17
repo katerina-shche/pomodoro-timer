@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import './App.css';
 import Timer from './Timer';
 import beep from './assets/buzz-beep.wav'
@@ -13,6 +13,8 @@ function App() {
   const [sessionLength, setSessionLength] = useState(25)
   const [minutes, setMinutes] = useState(25)
   const [isDisabled, setIsDisabled] = useState(false)
+  const audioRef = useRef(null)
+
   const onSwitchToBreak = () => {
       setTitle('Break')
       setMinutes(breakLength)
@@ -87,7 +89,7 @@ function App() {
       </div>
        <Timer title={title} minutes={minutes} onReset={onReset} onSwitchToSession={onSwitchToSession} onSwitchToBreak={onSwitchToBreak} onIsRunning={onIsRunning}/>
       <div id='author'>Coded by<br/>Katerina-Shche</div>
-      <audio id='beep' volume='1' src={beep} preload='auto'> </audio>
+      <audio ref={audioRef} id='beep' volume='1' src={beep} preload='auto'> </audio>
     </div>
   );
 }

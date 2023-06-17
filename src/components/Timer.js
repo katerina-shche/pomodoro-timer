@@ -9,6 +9,7 @@ import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
 export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwitchToSession, onIsRunning }) {
     const delay = useRef(false)
     const timer = useRef(false)
+    
     const prevMinutes = useRef(minutes)
     const prevTitle = useRef(title)
     const [isRunning, setIsRunning] = useState(false)
