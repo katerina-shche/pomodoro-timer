@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useTimer } from '../hooks/useTimer';
 //styles
 import './Timer.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,13 +7,13 @@ import { faPause } from '@fortawesome/free-solid-svg-icons'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
 
-export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwitchToSession, onIsRunning }) {
+export default function Timer({ title, minutes, onSwitchToBreak, onSwitchToSession, onIsRunning }) {
+    const { playPause, reset, isRunning } = useTimer()
     const delay = useRef(false)
     const timer = useRef(false)
     
     const prevMinutes = useRef(minutes)
     const prevTitle = useRef(title)
-    const [isRunning, setIsRunning] = useState(false)
     const secondsLeft = useRef(minutes * 60)
     const displayTimeLeft = (anySeconds) => {
         if (anySeconds < 0) {
@@ -103,27 +104,24 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
 
   
 
-    const handleToggle = () => {
-        setIsRunning(!isRunning)
-        onIsRunning(!isRunning, timeString)
-    }
 
-    const handleReset = () => {
-        clearInterval(timer.current)
-        clearTimeout(delay.current)
-        setIsRunning(false)
-        onIsRunning(false)
-        //uppdating min to 5 and 25 in App.js
-        onReset()
-        secondsLeft.current = 25 * 60
-        setTimeString(displayTimeLeft(25 * 60))
-        onSwitchToSession()
-        const audio = document.querySelector('audio')
-        audio.pause()
-        console.log('audio has been paused')
-        setIsPlaying(false)
-        audio.currentTime = 0; // rewind to the start
-    }
+
+   // const handleReset = () => {
+     //   clearInterval(timer.current)
+     //   clearTimeout(delay.current)
+     //   setIsRunning(false)
+     //   onIsRunning(false)
+     //   //uppdating min to 5 and 25 in App.js
+     //   onReset()
+     //   secondsLeft.current = 25 * 60
+     //   setTimeString(displayTimeLeft(25 * 60))
+     //   onSwitchToSession()
+     //   const audio = document.querySelector('audio')
+     //   audio.pause()
+     //   console.log('audio has been paused')
+     //   setIsPlaying(false)
+     //   audio.currentTime = 0; // rewind to the start
+     //  }
 
   return (
     <div id='timer'>
@@ -132,8 +130,8 @@ export default function Timer({ title, minutes, onReset, onSwitchToBreak, onSwit
             <div id='time-left'>{timeString}</div>
         </div>
         <div id='button-box'>
-            <button id='start_stop' className="icon" onClick={handleToggle}>{isRunning ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}</button>
-            <button id='reset' className="icon" onClick={handleReset}><FontAwesomeIcon icon={faPowerOff} /></button>
+            <button id='start_stop' className="icon" onClick={() => playPause(isRunning)}>{isRunning ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}</button>
+            <button id='reset' className="icon" onClick={() => reset()}><FontAwesomeIcon icon={faPowerOff} /></button>
         </div>
     </div>
   )
