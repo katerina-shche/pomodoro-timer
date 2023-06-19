@@ -48,6 +48,7 @@ const timerReducer = (state, action) => {
             return { ...state, isRunning: true, startMoment: Date.now(), endMoment: Date.now() + state.secondsLeft * 1000 }
         }
         case 'TICK':
+            console.log(state)
             return { ...state, secondsLeft: Math.round((state.endMoment - Date.now()) / 1000), timeString: displayTimeLeft(Math.round((state.endMoment - Date.now()) / 1000))}
         default: 
             return state
