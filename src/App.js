@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import './App.css';
 import { useTimer } from './hooks/useTimer';
 import Timer from './components/Timer';
-import beep from './assets/buzz-beep.wav'
+import beep from './assets/newBeep.wav'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
 import { faAngleUp } from '@fortawesome/free-solid-svg-icons'
