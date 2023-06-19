@@ -42,7 +42,7 @@ function App() {
               <FontAwesomeIcon icon={faAngleDown} className='icon'/>
             </button>
             <div id='break-length'>{breakLength}</div>
-            <button id='break-increment' className='btn' onClick={() => incrementBreakLength(breakLength)} disabled={isDisabled}>
+            <button id='break-increment' className='btn' onClick={() => incrementBreakLength()} disabled={isDisabled}>
               <FontAwesomeIcon icon={faAngleUp} className='icon'/>
             </button>
           </div>
@@ -54,7 +54,7 @@ function App() {
               <FontAwesomeIcon icon={faAngleDown} className='icon'/>
             </button>
             <div id='session-length'>{sessionLength}</div>
-            <button id='session-increment' className='btn' onClick={() => incrementSessionLength(sessionLength)} disabled={isDisabled}>
+            <button id='session-increment' className='btn' onClick={() => incrementSessionLength()} disabled={isDisabled}>
               <FontAwesomeIcon icon={faAngleUp} className='icon'/>
             </button>
           </div>

@@ -130,7 +130,7 @@ export default function Timer({ title, minutes, onSwitchToBreak, onSwitchToSessi
             <div id='time-left'>{timeString}</div>
         </div>
         <div id='button-box'>
-            <button id='start_stop' className="icon" onClick={() => playPause(isRunning)}>{isRunning ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}</button>
+            <button id='start_stop' className="icon" onClick={() => playPause()}>{isRunning ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}</button>
             <button id='reset' className="icon" onClick={() => reset()}><FontAwesomeIcon icon={faPowerOff} /></button>
         </div>
     </div>

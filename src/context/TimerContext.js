@@ -7,32 +7,56 @@ const timerReducer = (state, action) => {
         case 'CHANGE_COLOR':
             return { ...state, color: action.payload }
         case 'BREAK_INCREMENT':
-            return { ...state, breakLength: action.payload }
+            return { ...state, breakLength: state.breakLength+1 }
         case 'BREAK_DECREMENT':
-            return { ...state, breakLength: action.payload }
+            return { ...state, breakLength: state.breakLength-1 }
         case 'SESSION_INCREMENT':
-            return { ...state, sessionLength: action.payload, startMinutes: action.payload }
+            return { ...state, sessionLength: state.sessionLength+1, startMinutes: state.sessionLength+1 }
         case 'SESSION_DECREMENT':
-            return { ...state, sessionLength: action.payload, startMinutes: action.payload }
+            return { ...state, sessionLength: state.sessionLength-1, startMinutes: state.sessionLength-1 }
         case 'RESET':
             return { ...action.payload }
         case 'PLAYPAUSE':
-            return { ...state, isRunning: action.payload }
+            if (state.isRunning) {
+            return { ...state, isRunning: !state.isRunning }
+        } else {
+            return 'start to run: set now and then and setInterval'
+        }
+        case 'TICK':
+            return { ...state, secondsLeft: state.secondsLeft-1}
         default: 
             return state
     }
 }
 
 export function TimerProvider({ children }) {
+//basics
+//why in capitals? (what does it mean?)
+const SECONDS_IN_MINUTES = 60;
+
+const MAX_TIMER_VALUE_MINUTES = 60;
+const INITIAL_BRAKE_LENGTH_MINUTES = 5;
+const INITIAL_SESSION_LENGTH_MINUTES = 25;
+
+const minutesToSeconds = (value) => value * SECONDS_IN_MINUTES;
+const secondsToMinutes = (value) => Math.round(value / SECONDS_IN_MINUTES);
+const remainderSeconds = (value) => Math.round(value % SECONDS_IN_MINUTES);
+
     const initialState = {
+        //Settings
         color: 'red',
-        sessionLength: 25,
-        breakLength: 5,
-        startMinutes: 25,
-        secondsLeft: 25*60,
+        sessionLength: INITIAL_SESSION_LENGTH_MINUTES,
+        breakLength: INITIAL_BRAKE_LENGTH_MINUTES,
+        maxSessionLength: MAX_TIMER_VALUE_MINUTES,
+        maxBreakLength: MAX_TIMER_VALUE_MINUTES,
+        startMinutes: INITIAL_SESSION_LENGTH_MINUTES,
+        //State
+        secondsLeft: INITIAL_SESSION_LENGTH_MINUTES * SECONDS_IN_MINUTES,
         isRunning: false,
         isSession: true,
-        isDisabled: false
+        isDisabled: false,
+        startMoment: null,
+        endMoment: null,
     }
     const [state, dispatch] = useReducer(timerReducer, initialState)
 
@@ -41,25 +65,25 @@ export function TimerProvider({ children }) {
     }
 
     //how to increment/decriment +/- 1 without passing an initial value?
-    const incrementBreakLength = (breakLength) => {
-        dispatch({ type: 'BREAK_INCREMENT', payload: breakLength+1 })
+    const incrementBreakLength = () => {
+        dispatch({ type: 'BREAK_INCREMENT' })
     }
-    const decrementBreakLength = (breakLength) => {
-        dispatch({ type: 'BREAK_DECREMENT', payload: breakLength-1 })
+    const decrementBreakLength = () => {
+        dispatch({ type: 'BREAK_DECREMENT' })
     }
-    const incrementSessionLength = (sessionLength) => {
-        dispatch({ type: 'SESSION_INCREMENT', payload: sessionLength+1 })
+    const incrementSessionLength = () => {
+        dispatch({ type: 'SESSION_INCREMENT'})
     }
-    const decrementSessionLength = (sessionLength) => {
-        dispatch({ type: 'SESSION_DECREMENT', payload: sessionLength-1 })
+    const decrementSessionLength = () => {
+        dispatch({ type: 'SESSION_DECREMENT' })
     }
 
     // need to add audio.pause() and audio.currentTime = 0
     const reset = () => {
         dispatch( { type: 'RESET', payload: initialState })
     }
-    const playPause = (isRunning) => {
-        dispatch({ type: 'PLAYPAUSE', payload: !isRunning })
+    const playPause = () => {
+        dispatch({ type: 'PLAYPAUSE' })
     }
     
 
