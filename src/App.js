@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import './App.css';
 import { useTimer } from './hooks/useTimer';
-import Timer from './components/OldTimer';
+import Timer from './components/Timer';
 import beep from './assets/newBeep.wav'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'

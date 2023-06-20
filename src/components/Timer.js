@@ -30,7 +30,7 @@ export default function Timer() {
             <div id='time-left'>{timeString}</div>
         </div>
         <div id='button-box'>
-            <button id='start_stop' className="icon" onClick={() => playPause()}>{isRunning ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}</button>
+            <button id='start_stop' className="icon" onClick={() => playPause(Date.now())}>{isRunning ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}</button>
             <button id='reset' className="icon" onClick={() => reset()}><FontAwesomeIcon icon={faPowerOff} /></button>
         </div>
     </div>
