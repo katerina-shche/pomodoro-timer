@@ -20,7 +20,7 @@ export default function Timer() {
             clearInterval(timer)
         }
     }
-, [isRunning, tick])
+, [isRunning, tick, isSession])
 
 
   return (

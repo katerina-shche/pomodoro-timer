@@ -35,10 +35,12 @@ const timerReducer = (state, action) => {
             return { ...state, sessionLength: state.sessionLength+1, startMinutes: state.sessionLength+1, secondsLeft: minutesToSeconds(state.sessionLength+1), timeString: displayTimeLeft(minutesToSeconds(state.sessionLength+1)) }
         case 'SESSION_DECREMENT':
             return { ...state, sessionLength: state.sessionLength-1, startMinutes: state.sessionLength-1, secondsLeft: minutesToSeconds(state.sessionLength-1), timeString: displayTimeLeft(minutesToSeconds(state.sessionLength-1))  }
+        case 'START':
+                return { ...state, isRunning: true, startMoment: action.payload, endMoment: action.payload + state.secondsLeft * 1000 }
+           
         case 'SWITCH_TO_BREAK':
-                return { ...state, isSession: false, startMinutes: state.breakLength, secondsLeft: minutesToSeconds(state.breakLength) }
-        case 'SWITCH_TO_SESSION':
-                return { ...action.payload }
+                return { ...state, isSession: false, isRunning: true, startMinutes: state.breakLength, startMoment: action.payload, endMoment: action.payload + minutesToSeconds(state.breakLength)*1000, secondsLeft: Math.round(((action.payload + minutesToSeconds(state.breakLength) * 1000) - Date.now()) / 1000), timeString: displayTimeLeft(Math.round(((action.payload + minutesToSeconds(state.breakLength) * 1000) - Date.now()) / 1000)) }
+                
         case 'RESET':
             return { ...action.payload }
         case 'PLAYPAUSE':
@@ -46,13 +48,14 @@ const timerReducer = (state, action) => {
             return { ...state, isRunning: false }
         } else {
             // 'start to run: set start and end and setInterval'
-            return { ...state, isRunning: true, startMoment: action.payload, endMoment: action.payload + state.secondsLeft * 1000 }
+            return timerReducer( state, { type: 'START', payload: action.payload } )
         }
         case 'TICK':
-            if (state.secondsLeft < 0) {
-                return timerReducer(state, { type: 'SWITCH_TO_BREAK' })
+            if (state.secondsLeft <= 0) {
+                return timerReducer(state, { type: 'SWITCH_TO_BREAK', payload: Date.now() })
+            }  else {
+            return { ...state, secondsLeft: Math.round((state.endMoment - Date.now()) / 1000), timeString: displayTimeLeft(Math.round((state.endMoment - Date.now()) / 1000))}
             }
-            return { ...state, secondsLeft: Math.round((state.endMoment - Date.now()) / 1000 - 60), timeString: displayTimeLeft(Math.round((state.endMoment - Date.now()) / 1000))}
         default: 
             return state
     }
@@ -107,10 +110,14 @@ export function TimerProvider({ children }) {
     const switchToBreak = () => {
         dispatch({ type: 'SWITCH_TO_BREAK'})
     }
+
+    const start = (timestamp) => {
+        dispatch({type: 'START', payload: timestamp })
+    }
     
 
     return (
-        <TimerContext.Provider value={{ ...state, incrementBreakLength, decrementBreakLength, incrementSessionLength, decrementSessionLength, reset, playPause, tick, switchToBreak }}>
+        <TimerContext.Provider value={{ ...state, start, incrementBreakLength, decrementBreakLength, incrementSessionLength, decrementSessionLength, reset, playPause, tick, switchToBreak }}>
             {children}
         </TimerContext.Provider>
     )
