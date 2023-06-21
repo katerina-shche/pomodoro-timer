@@ -7,6 +7,7 @@ export const TimerContext = createContext()
 const SECONDS_IN_MINUTES = 60;
 
 const MAX_TIMER_VALUE_MINUTES = 60;
+const MIN_TIMER_VALUE_MINUTES = 1;
 const INITIAL_BRAKE_LENGTH_MINUTES = 5;
 const INITIAL_SESSION_LENGTH_MINUTES = 25;
 
@@ -87,17 +88,25 @@ export function TimerProvider({ children }) {
     }
     const [state, dispatch] = useReducer(timerReducer, initialState)
 
-    const incrementBreakLength = () => {
-        dispatch({ type: 'BREAK_INCREMENT' })
+    const incrementBreakLength = (breakLength) => {
+        if (breakLength < MAX_TIMER_VALUE_MINUTES) {
+            dispatch({ type: 'BREAK_INCREMENT' })
+            } 
     }
-    const decrementBreakLength = () => {
-        dispatch({ type: 'BREAK_DECREMENT' })
+    const decrementBreakLength = (breakLength) => {
+        if (breakLength > MIN_TIMER_VALUE_MINUTES) {
+            dispatch({ type: 'BREAK_DECREMENT' })
+            }
     }
-    const incrementSessionLength = () => {
-        dispatch({ type: 'SESSION_INCREMENT'})
+    const incrementSessionLength = (sessionLength) => {
+        if (sessionLength < MAX_TIMER_VALUE_MINUTES) {
+            dispatch({ type: 'SESSION_INCREMENT'})
+            }
     }
-    const decrementSessionLength = () => {
-        dispatch({ type: 'SESSION_DECREMENT' })
+    const decrementSessionLength = (sessionLength) => {
+        if (sessionLength > MIN_TIMER_VALUE_MINUTES) {
+            dispatch({ type: 'SESSION_DECREMENT' })
+            }
     }
 
     // need to add audio.pause() and audio.currentTime = 0
