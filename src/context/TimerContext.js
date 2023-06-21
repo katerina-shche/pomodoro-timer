@@ -40,7 +40,9 @@ const timerReducer = (state, action) => {
            
         case 'SWITCH_TO_BREAK':
                 return { ...state, isSession: false, isRunning: true, startMinutes: state.breakLength, startMoment: action.payload, endMoment: action.payload + minutesToSeconds(state.breakLength)*1000, secondsLeft: Math.round(((action.payload + minutesToSeconds(state.breakLength) * 1000) - Date.now()) / 1000), timeString: displayTimeLeft(Math.round(((action.payload + minutesToSeconds(state.breakLength) * 1000) - Date.now()) / 1000)) }
-                
+        case 'SWITCH_TO_SESSION':
+                    return { ...state, isSession: true, isRunning: true, startMinutes: state.sessionLength, startMoment: action.payload, endMoment: action.payload + minutesToSeconds(state.sessionLength)*1000, secondsLeft: Math.round(((action.payload + minutesToSeconds(state.sessionLength) * 1000) - Date.now()) / 1000), timeString: displayTimeLeft(Math.round(((action.payload + minutesToSeconds(state.sessionLength) * 1000) - Date.now()) / 1000)) }
+                            
         case 'RESET':
             return { ...action.payload }
         case 'PLAYPAUSE':
@@ -51,9 +53,11 @@ const timerReducer = (state, action) => {
             return timerReducer( state, { type: 'START', payload: action.payload } )
         }
         case 'TICK':
-            if (state.secondsLeft <= 0) {
+            if (state.secondsLeft <= 0 && state.isSession) {
                 return timerReducer(state, { type: 'SWITCH_TO_BREAK', payload: Date.now() })
-            }  else {
+            }  else if (state.secondsLeft <= 0 && !state.isSession) {
+                return timerReducer(state, { type: 'SWITCH_TO_SESSION', payload: Date.now() })
+            } else {
             return { ...state, secondsLeft: Math.round((state.endMoment - Date.now()) / 1000), timeString: displayTimeLeft(Math.round((state.endMoment - Date.now()) / 1000))}
             }
         default: 
@@ -111,13 +115,17 @@ export function TimerProvider({ children }) {
         dispatch({ type: 'SWITCH_TO_BREAK'})
     }
 
+    const switchToSession = () => {
+        dispatch({ type: 'SWITCH_TO_SESSION'})
+    }
+
     const start = (timestamp) => {
         dispatch({type: 'START', payload: timestamp })
     }
     
 
     return (
-        <TimerContext.Provider value={{ ...state, start, incrementBreakLength, decrementBreakLength, incrementSessionLength, decrementSessionLength, reset, playPause, tick, switchToBreak }}>
+        <TimerContext.Provider value={{ ...state, start, incrementBreakLength, decrementBreakLength, incrementSessionLength, decrementSessionLength, reset, playPause, tick, switchToBreak, switchToSession }}>
             {children}
         </TimerContext.Provider>
     )
