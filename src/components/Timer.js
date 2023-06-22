@@ -7,26 +7,25 @@ import { faPause } from '@fortawesome/free-solid-svg-icons'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { faPowerOff } from '@fortawesome/free-solid-svg-icons'
 
-export default function Timer() {
+export default function Timer({ onBeep, onStopBeeping }) {
     const { tick, playPause, reset, isRunning, timeString, isSession  } = useTimer()
 
     useEffect(() => {
         let timer
         if (isRunning) {
+        onBeep()    
         timer = setInterval(() => tick(), 1000)
-        }
+        } else if (!isRunning) {
+            onStopBeeping()
+            }
             
         return () => {
             clearInterval(timer)
         }
     }
-, [isRunning, tick, isSession])
-   //useEffect(() => {
-   // if(secondsLeft === 0) {
-   //     onAudioPlay()
-   // }
+, [isRunning, tick, isSession, onBeep, onStopBeeping])
+   
 
-   //}, [secondsLeft]
 
    
 

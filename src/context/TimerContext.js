@@ -51,7 +51,7 @@ const timerReducer = (state, action) => {
         case 'SWITCH_TO_SESSION':
                     return { ...state, isSession: true, isRunning: true, startMinutes: state.sessionLength, startMoment: action.payload, endMoment: action.payload + minutesToSeconds(state.sessionLength)*1000, secondsLeft: Math.round(((action.payload + minutesToSeconds(state.sessionLength) * 1000) - Date.now()) / 1000), timeString: displayTimeLeft(Math.round(((action.payload + minutesToSeconds(state.sessionLength) * 1000) - Date.now()) / 1000)) }
         case 'RESET':
-            return { ...action.payload }
+            return { ...action.payload, isRunning: false }
         case 'PLAYPAUSE':
             if (state.isRunning) {
             return { ...state, isRunning: false }

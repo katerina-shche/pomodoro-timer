@@ -9,8 +9,24 @@ import { faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
 function App() {
   
-  const { isRunning, breakLength, sessionLength, incrementBreakLength, decrementBreakLength, incrementSessionLength, decrementSessionLength } = useTimer()
+  const { isRunning, secondsLeft, breakLength, sessionLength, incrementBreakLength, decrementBreakLength, incrementSessionLength, decrementSessionLength } = useTimer()
   const audioRef = useRef(null)
+  const onBeep = () => {
+    if (secondsLeft === 0) {
+     audioRef.current.currentTime = 0
+     audioRef.current.play()
+      .then(() => {
+        console.log('Playback started successfully')
+      })
+      .catch((err) => {
+        console.log('Failed to start playback', err)
+      })
+    }
+  }
+  const onStopBeeping = () => {
+    audioRef.current.pause()
+    audioRef.current.currentTime = 0
+  }
 
   return (
     <div className="App">
@@ -41,7 +57,7 @@ function App() {
           </div>
         </div>
       </div>
-       <Timer />
+       <Timer onBeep={onBeep} onStopBeeping={onStopBeeping}/>
       <div id='author'>Coded by<br/>Katerina-Shche</div>
       <audio ref={audioRef} id='beep' volume='1' src={beep} preload='auto'> </audio>
     </div>
