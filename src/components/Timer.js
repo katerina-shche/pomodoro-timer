@@ -21,7 +21,14 @@ export default function Timer() {
         }
     }
 , [isRunning, tick, isSession])
+   //useEffect(() => {
+   // if(secondsLeft === 0) {
+   //     onAudioPlay()
+   // }
 
+   //}, [secondsLeft]
+
+   
 
   return (
     <div id='timer'>

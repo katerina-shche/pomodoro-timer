@@ -29,21 +29,27 @@ const timerReducer = (state, action) => {
     console.log(state) 
     switch (action.type) {
         case 'BREAK_INCREMENT':
+            if (state.breakLength < state.maxSessionLength) {
             return { ...state, breakLength: state.breakLength+1 } 
+            } else return {...state }
         case 'BREAK_DECREMENT':
+            if (state.breakLength > state.minSessionLength) {
             return { ...state, breakLength: state.breakLength-1 }
+            } else return {...state }
         case 'SESSION_INCREMENT':
+            if (state.sessionLength < state.maxSessionLength) {
             return { ...state, sessionLength: state.sessionLength+1, startMinutes: state.sessionLength+1, secondsLeft: minutesToSeconds(state.sessionLength+1), timeString: displayTimeLeft(minutesToSeconds(state.sessionLength+1)) }
+            } else return {...state }
         case 'SESSION_DECREMENT':
+            if (state.sessionLength > state.minSessionLength) {
             return { ...state, sessionLength: state.sessionLength-1, startMinutes: state.sessionLength-1, secondsLeft: minutesToSeconds(state.sessionLength-1), timeString: displayTimeLeft(minutesToSeconds(state.sessionLength-1))  }
+            } else return {...state }
         case 'START':
                 return { ...state, isRunning: true, startMoment: action.payload, endMoment: action.payload + state.secondsLeft * 1000 }
-           
         case 'SWITCH_TO_BREAK':
                 return { ...state, isSession: false, isRunning: true, startMinutes: state.breakLength, startMoment: action.payload, endMoment: action.payload + minutesToSeconds(state.breakLength)*1000, secondsLeft: Math.round(((action.payload + minutesToSeconds(state.breakLength) * 1000) - Date.now()) / 1000), timeString: displayTimeLeft(Math.round(((action.payload + minutesToSeconds(state.breakLength) * 1000) - Date.now()) / 1000)) }
         case 'SWITCH_TO_SESSION':
                     return { ...state, isSession: true, isRunning: true, startMinutes: state.sessionLength, startMoment: action.payload, endMoment: action.payload + minutesToSeconds(state.sessionLength)*1000, secondsLeft: Math.round(((action.payload + minutesToSeconds(state.sessionLength) * 1000) - Date.now()) / 1000), timeString: displayTimeLeft(Math.round(((action.payload + minutesToSeconds(state.sessionLength) * 1000) - Date.now()) / 1000)) }
-                            
         case 'RESET':
             return { ...action.payload }
         case 'PLAYPAUSE':
@@ -75,6 +81,7 @@ export function TimerProvider({ children }) {
         sessionLength: INITIAL_SESSION_LENGTH_MINUTES,
         breakLength: INITIAL_BRAKE_LENGTH_MINUTES,
         maxSessionLength: MAX_TIMER_VALUE_MINUTES,
+        minSessionLength: MIN_TIMER_VALUE_MINUTES,
         maxBreakLength: MAX_TIMER_VALUE_MINUTES,
         startMinutes: INITIAL_SESSION_LENGTH_MINUTES,
         //State
@@ -88,25 +95,17 @@ export function TimerProvider({ children }) {
     }
     const [state, dispatch] = useReducer(timerReducer, initialState)
 
-    const incrementBreakLength = (breakLength) => {
-        if (breakLength < MAX_TIMER_VALUE_MINUTES) {
-            dispatch({ type: 'BREAK_INCREMENT' })
-            } 
+    const incrementBreakLength = () => {
+        dispatch({ type: 'BREAK_INCREMENT' })
     }
-    const decrementBreakLength = (breakLength) => {
-        if (breakLength > MIN_TIMER_VALUE_MINUTES) {
+    const decrementBreakLength = () => {
             dispatch({ type: 'BREAK_DECREMENT' })
-            }
     }
-    const incrementSessionLength = (sessionLength) => {
-        if (sessionLength < MAX_TIMER_VALUE_MINUTES) {
+    const incrementSessionLength = () => {
             dispatch({ type: 'SESSION_INCREMENT'})
-            }
     }
-    const decrementSessionLength = (sessionLength) => {
-        if (sessionLength > MIN_TIMER_VALUE_MINUTES) {
+    const decrementSessionLength = () => {
             dispatch({ type: 'SESSION_DECREMENT' })
-            }
     }
 
     // need to add audio.pause() and audio.currentTime = 0

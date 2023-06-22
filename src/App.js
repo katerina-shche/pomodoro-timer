@@ -19,11 +19,11 @@ function App() {
         <div id='break-box'>
           <h2 id='break-label'>Break Length</h2> 
           <div className='toolbox'>
-            <button id='break-decrement' className='btn' onClick={() => decrementBreakLength(breakLength)} disabled={isRunning}>
+            <button id='break-decrement' className='btn' onClick={() => decrementBreakLength()} disabled={isRunning}>
               <FontAwesomeIcon icon={faAngleDown} className='icon'/>
             </button>
             <div id='break-length'>{breakLength}</div>
-            <button id='break-increment' className='btn' onClick={() => incrementBreakLength(breakLength)} disabled={isRunning}>
+            <button id='break-increment' className='btn' onClick={() => incrementBreakLength()} disabled={isRunning}>
               <FontAwesomeIcon icon={faAngleUp} className='icon'/>
             </button>
           </div>
@@ -31,11 +31,11 @@ function App() {
        <div id='session-box'>
           <h2 id='session-label'>Session Length</h2>
           <div className='toolbox'>
-            <button id='session-decrement' className='btn' onClick={() => decrementSessionLength(sessionLength)} disabled={isRunning}>
+            <button id='session-decrement' className='btn' onClick={() => decrementSessionLength()} disabled={isRunning}>
               <FontAwesomeIcon icon={faAngleDown} className='icon'/>
             </button>
             <div id='session-length'>{sessionLength}</div>
-            <button id='session-increment' className='btn' onClick={() => incrementSessionLength(sessionLength)} disabled={isRunning}>
+            <button id='session-increment' className='btn' onClick={() => incrementSessionLength()} disabled={isRunning}>
               <FontAwesomeIcon icon={faAngleUp} className='icon'/>
             </button>
           </div>
