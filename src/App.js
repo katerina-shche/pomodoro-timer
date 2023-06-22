@@ -25,8 +25,10 @@ function App() {
   }
   const onStopBeeping = () => {
     audioRef.current.pause()
+    console.log("audio is paused")
     audioRef.current.currentTime = 0
   }
+  
 
   return (
     <div className="App">

@@ -1,5 +1,6 @@
 import { createContext, useReducer } from "react"
 
+
 export const TimerContext = createContext()
 
 //basics
@@ -91,7 +92,7 @@ export function TimerProvider({ children }) {
         // should I add isDisabled (for buttons) = isRunning for better readability??
         isSession: true,
         startMoment: null,
-        endMoment: null,
+        endMoment: null
     }
     const [state, dispatch] = useReducer(timerReducer, initialState)
 
