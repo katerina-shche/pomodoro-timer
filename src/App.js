@@ -9,10 +9,9 @@ import { faAngleUp } from '@fortawesome/free-solid-svg-icons'
 
 function App() {
   
-  const { isRunning, secondsLeft, breakLength, sessionLength, incrementBreakLength, decrementBreakLength, incrementSessionLength, decrementSessionLength } = useTimer()
+  const { isRunning, breakLength, sessionLength, incrementBreakLength, decrementBreakLength, incrementSessionLength, decrementSessionLength } = useTimer()
   const audioRef = useRef(null)
   const onBeep = () => {
-    if (secondsLeft === 0) {
      audioRef.current.currentTime = 0
      audioRef.current.play()
       .then(() => {
@@ -22,7 +21,7 @@ function App() {
         console.log('Failed to start playback', err)
       })
     }
-  }
+  
   const onStopBeeping = () => {
     audioRef.current.pause()
     console.log("audio is paused")
