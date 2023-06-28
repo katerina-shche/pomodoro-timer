@@ -30,6 +30,9 @@ export default function Timer({ onBeep, onStopBeeping }) {
 , [isRunning, tick, isSession, secondsLeft, onBeep])
    
 
+
+   
+
   return (
     <div id='timer'>
         <div id='timer-frame'>

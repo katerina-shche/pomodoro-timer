@@ -3,21 +3,18 @@ import { createContext, useReducer } from "react"
 
 export const TimerContext = createContext()
 
-// basics
-const SECONDS_IN_MINUTES = 60
-const MILLISECONDS_IN_SECONDS = 1000
+//basics
+//why in capitals? (what does it mean?)
+const SECONDS_IN_MINUTES = 60;
 
-const MAX_TIMER_VALUE_MINUTES = 60
-const MIN_TIMER_VALUE_MINUTES = 1
-const INITIAL_BRAKE_LENGTH_MINUTES = 5
-const INITIAL_SESSION_LENGTH_MINUTES = 25
+const MAX_TIMER_VALUE_MINUTES = 60;
+const MIN_TIMER_VALUE_MINUTES = 1;
+const INITIAL_BRAKE_LENGTH_MINUTES = 5;
+const INITIAL_SESSION_LENGTH_MINUTES = 25;
 
-
-const minutesToSeconds = (valInMin) => valInMin * SECONDS_IN_MINUTES
-const secondsToMinutes = (valInSec) => Math.floor(valInSec / SECONDS_IN_MINUTES)
-const remainderSeconds = (valInSec) => Math.floor(valInSec % SECONDS_IN_MINUTES)
-const secondsToMilliseconds = (valInSec) => Math.floor(valInSec * MILLISECONDS_IN_SECONDS)
-const millisecondsToSeconds = (valInMilliSec) => Math.floor(valInMilliSec / MILLISECONDS_IN_SECONDS)
+const minutesToSeconds = (valInMin) => valInMin * SECONDS_IN_MINUTES;
+const secondsToMinutes = (valInSec) => Math.floor(valInSec / SECONDS_IN_MINUTES);
+const remainderSeconds = (valInSec) => Math.floor(valInSec % SECONDS_IN_MINUTES);
 
 const displayTimeLeft = (valInSec) => {
     if (valInSec < 0) {
@@ -42,64 +39,34 @@ const timerReducer = (state, action) => {
             } else return state
         case 'SESSION_INCREMENT':
             if (state.sessionLength < state.maxSessionLength) {
-            return { ...state,
-                    sessionLength: state.sessionLength+1,
-                    startMinutes: state.sessionLength+1,
-                    secondsLeft: minutesToSeconds(state.sessionLength+1),
-                    timeString: displayTimeLeft(minutesToSeconds(state.sessionLength+1))
-                    }
-            } else return state
+            return { ...state, sessionLength: state.sessionLength+1, startMinutes: state.sessionLength+1, secondsLeft: minutesToSeconds(state.sessionLength+1), timeString: displayTimeLeft(minutesToSeconds(state.sessionLength+1)) }
+            } else return state 
         case 'SESSION_DECREMENT':
             if (state.sessionLength > state.minSessionLength) {
-            return { ...state, 
-                    sessionLength: state.sessionLength-1,
-                    startMinutes: state.sessionLength-1,
-                    secondsLeft: minutesToSeconds(state.sessionLength-1),
-                    timeString: displayTimeLeft(minutesToSeconds(state.sessionLength-1))
-                    }
-            } else return state
+            return { ...state, sessionLength: state.sessionLength-1, startMinutes: state.sessionLength-1, secondsLeft: minutesToSeconds(state.sessionLength-1), timeString: displayTimeLeft(minutesToSeconds(state.sessionLength-1))  }
+            } else return state 
         case 'START':
-            return { ...state,
-                    isRunning: true,
-                    startMoment: action.payload,
-                    endMoment: secondsToMilliseconds(action.payload + state.secondsLeft)
-                    }
+                return { ...state, isRunning: true, startMoment: action.payload, endMoment: action.payload + state.secondsLeft * 1000 }
         case 'SWITCH_TO_BREAK':
-            return { ...state,
-                    isSession: false,
-                    isRunning: true,
-                    startMinutes: state.breakLength,
-                    startMoment: action.payload,
-                    endMoment: action.payload + minutesToSeconds(state.breakLength)*1000,
-                    secondsLeft: Math.round(((action.payload + minutesToSeconds(state.breakLength) * 1000) - Date.now()) / MILLISECONDS_IN_SECONDS),
-                    timeString: displayTimeLeft(Math.round(millisecondsToSeconds(action.payload + secondsToMilliseconds(minutesToSeconds(state.breakLength)) - Date.now())))
-                    }
+                return { ...state, isSession: false, isRunning: true, startMinutes: state.breakLength, startMoment: action.payload, endMoment: action.payload + minutesToSeconds(state.breakLength)*1000, secondsLeft: Math.round(((action.payload + minutesToSeconds(state.breakLength) * 1000) - Date.now()) / 1000), timeString: displayTimeLeft(Math.round(((action.payload + minutesToSeconds(state.breakLength) * 1000) - Date.now()) / 1000)) }
         case 'SWITCH_TO_SESSION':
-            return { ...state,
-                    isSession: true,
-                    isRunning: true,
-                    startMinutes: state.sessionLength,
-                    startMoment: action.payload,
-                    endMoment: action.payload + minutesToSeconds(state.sessionLength)*1000,
-                    secondsLeft: Math.round(((action.payload + minutesToSeconds(state.sessionLength) * 1000) - Date.now()) / 1000),
-                    timeString: displayTimeLeft(Math.round(((action.payload + minutesToSeconds(state.sessionLength) * 1000) - Date.now()) / 1000))
-                    }
+                    return { ...state, isSession: true, isRunning: true, startMinutes: state.sessionLength, startMoment: action.payload, endMoment: action.payload + minutesToSeconds(state.sessionLength)*1000, secondsLeft: Math.round(((action.payload + minutesToSeconds(state.sessionLength) * 1000) - Date.now()) / 1000), timeString: displayTimeLeft(Math.round(((action.payload + minutesToSeconds(state.sessionLength) * 1000) - Date.now()) / 1000)) }
         case 'RESET':
             return { ...action.payload, isRunning: false }
         case 'PLAYPAUSE':
             if (state.isRunning) {
-                return { ...state, isRunning: false }
-            } else {
+            return { ...state, isRunning: false }
+        } else {
             // 'start to run: set start and end and setInterval'
-                return timerReducer( state, { type: 'START', payload: action.payload } )
-            }
+            return timerReducer( state, { type: 'START', payload: action.payload } )
+        }
         case 'TICK':
             if (state.secondsLeft <= 0 && state.isSession) {
                 return timerReducer(state, { type: 'SWITCH_TO_BREAK', payload: Date.now() })
-            } else if (state.secondsLeft <= 0 && !state.isSession) {
+            }  else if (state.secondsLeft <= 0 && !state.isSession) {
                 return timerReducer(state, { type: 'SWITCH_TO_SESSION', payload: Date.now() })
             } else {
-                return { ...state, secondsLeft: Math.round((state.endMoment - Date.now()) / 1000), timeString: displayTimeLeft(Math.round((state.endMoment - Date.now()) / 1000))}
+            return { ...state, secondsLeft: Math.round((state.endMoment - Date.now()) / 1000), timeString: displayTimeLeft(Math.round((state.endMoment - Date.now()) / 1000))}
             }
         default: 
             return state
@@ -142,6 +109,7 @@ export function TimerProvider({ children }) {
             dispatch({ type: 'SESSION_DECREMENT' })
     }
 
+    // need to add audio.pause() and audio.currentTime = 0
     const reset = () => {
         dispatch( { type: 'RESET', payload: initialState })
     }
