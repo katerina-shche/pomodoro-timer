@@ -4,7 +4,6 @@ import { createContext, useReducer } from "react"
 export const TimerContext = createContext()
 
 //basics
-//why in capitals? (what does it mean?)
 const SECONDS_IN_MINUTES = 60;
 
 const MAX_TIMER_VALUE_MINUTES = 60;
