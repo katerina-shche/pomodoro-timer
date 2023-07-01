@@ -88,7 +88,7 @@ export function TimerProvider({ children }) {
         secondsLeft: minutesToSeconds(INITIAL_SESSION_LENGTH_MINUTES),
         timeString: displayTimeLeft(minutesToSeconds(INITIAL_SESSION_LENGTH_MINUTES)),
         isRunning: false,
-        // should I add isDisabled (for buttons) = isRunning for better readability??
+    
         isSession: true,
         startMoment: null,
         endMoment: null
@@ -107,8 +107,6 @@ export function TimerProvider({ children }) {
     const decrementSessionLength = () => {
             dispatch({ type: 'SESSION_DECREMENT' })
     }
-
-    // need to add audio.pause() and audio.currentTime = 0
     const reset = () => {
         dispatch( { type: 'RESET', payload: initialState })
     }
