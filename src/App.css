@@ -53,6 +53,7 @@ h1 {
   width: 100%;
   height: 50%;
   justify-content: center;
+  margin-top: 5px;
 }
  #session-length, #break-length {
   flex-basis: 1;
@@ -67,15 +68,23 @@ button {
 }
 #session-decrement, #session-increment, #break-decrement, #break-increment {
   flex-basis: 1;
-  width: 30px;
-  height: 100%;
+  width: 50px;
+  height: 50px;
 }
+
+
 
 .icon {
   font-size: 30px;
   color: var(--title-color);
   opacity: 1;
 }
+
+.btn .icon {
+  display: inline-block;
+  line-height: 250px;
+}
+
 .btn .icon:hover {
   font-size: 36px;
 }
@@ -87,16 +96,37 @@ button {
 
 #break-length, #session-length {
   font-size: 30px;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   color: var(--title-color);
+  margin-left: 5px;
+  margin-right: 5px;
   display: flex;
+  align-items: center;
   text-align: center;
   justify-items: center;
   border: 3px var(--border-color) solid;
   border-radius: 50%;
+  display: inline-block;
+  line-height: 1.55;
 }
 #author {
   color: var(--border-color)
 }
 
+@media screen and (max-width: 400px) {
+  #adjustments {
+    flex-flow: column wrap;
+  }
+  .App {
+    width: 100vw;
+    min-width: 306px;
+    height: 100vh;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    border: 1px red solid;
+  }
+  h1 {
+    font-size: 40px;
+  }
+}
